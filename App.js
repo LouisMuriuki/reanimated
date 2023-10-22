@@ -1,8 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import FirstAnimation from "./components/beginner/FirstAnimation";
-import { Move } from "./components/beginner/AnimatedStyles$Props/Move";
-import Circle from "./components/beginner/AnimatedStyles$Props/Circle";
+import { Move } from "./components/beginner/AnimatedStyles/WithTiming/Move";
+import Circle from "./components/beginner/AnimatedProps/withTiming/Circle";
+import EndlessBounce from "./components/beginner/AnimatedStyles/WithTiming/EndlessBounce";
+import Courasel from "./components/beginner/AnimatedStyles/withSpring/Courasel";
+import DelayText from "./components/beginner/AnimatedStyles/withDelay/DelayText";
 
 export default function App() {
   return (
@@ -10,7 +13,10 @@ export default function App() {
       <StatusBar style="auto" />
       {/* <FirstAnimation /> */}
       {/* <Move /> useAnimated Styles */}
-      <Circle/>
+      {/* <Circle/> */}
+      {/* <EndlessBounce/> */}
+      {/* <Courasel/> */}
+      <DelayText />
     </View>
   );
 }
