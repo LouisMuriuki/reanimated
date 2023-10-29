@@ -1,0 +1,19 @@
+Create a Bouncing Ball: Implement a simple animation where a ball smoothly bounces up and down on the screen. You can control the speed, height, and duration of the bounce.
+
+Swipe to Delete: Build a swipeable component where users can swipe left on an item to reveal a delete button. Implement a smooth animation for revealing and hiding the button.
+
+Animated Progress Bar: Create a progress bar that fills up gradually, simulating the progress of a task. Use Reanimated to make the fill animation smooth and visually appealing.
+
+Fade In/Fade Out Elements: Animate the opacity of a set of elements to make them fade in and out smoothly. You can use this to create an intro screen with fading text and images.
+
+Draggable Card Stack: Develop a stack of draggable cards that users can swipe left or right. Implement smooth animations for card movement, as well as for cards flying off the screen when swiped away.
+
+Rotating Menu Button: Create a rotating menu button that expands into a menu when tapped. Animate the rotation and scaling of the button and the appearance of menu items.
+
+Animated List Items: Animate the appearance of list items as they scroll into view. Implement smooth transitions and animations for entering and exiting list items.
+
+Circular Progress Indicator: Build a circular progress indicator that displays the progress of a task. Animate the filling of the circle as the progress increases.
+
+Animated Header Parallax: Implement a parallax effect for a scrollable header. As the user scrolls down a content list, the header should smoothly shrink and move to the top of the screen.
+
+Dynamic Color Change: Create a component where the background color smoothly transitions from one color to another. Allow users to interact with the component to trigger the color change.
