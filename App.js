@@ -11,6 +11,7 @@ import TapGesture from "./components/beginner/Gestures/Tap";
 import BouncingBall from "./trial/components/BouncingBall";
 import SwipeDelete from "./trial/components/SwipeDelete";
 import Progress from "./trial/components/Progress";
+import CardGame from "./experimental/games/CardGame";
 
 export default function App() {
   return (
@@ -25,7 +26,8 @@ export default function App() {
         {/* <TapGesture/> */}
         {/* <BouncingBall/> */}
         {/* <SwipeDelete/>  */}
-        <Progress/>
+        {/* <Progress/> */}
+        <CardGame/>
     </GestureHandlerRootView>
   );
 }
