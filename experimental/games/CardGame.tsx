@@ -1,6 +1,8 @@
 import { View, StyleSheet, Button, Image } from "react-native";
 import React, { useEffect } from "react";
 import Animated, {
+  interpolate,
+  useAnimatedStyle,
   useSharedValue,
   withDelay,
   withTiming,
@@ -25,6 +27,7 @@ const duration = 1500;
 const CardGame = () => {
   const text1Opacity = useSharedValue(0);
   const text2Opacity = useSharedValue(0);
+  const rotate = useSharedValue(0);
 
   useEffect(() => {
     text1Opacity.value = withDelay(1 * delay, withTiming(1, { duration }));
@@ -32,6 +35,15 @@ const CardGame = () => {
   }, []);
 
   const Start = () => {};
+  const animatedStyles = useAnimatedStyle(() => {
+    const rotateValue = interpolate(rotate.value, [0.1], [180, 360]);
+    return {
+      transform: [
+        { rotateY: withTiming(`${rotateValue}deg`, { duration: 1000 }) },
+      ],
+    };
+  });
+  // const Start = () => {};
   return (
     <View style={styles.container}>
       <View style={styles.innercontainer}>
@@ -50,7 +62,13 @@ const CardGame = () => {
         <View style={styles.cardsSection}>
           {cards.map((card, i) => {
             console.log(card);
-            return <Image key={i} source={card.image} style={styles.card} />;
+            return (
+              <Animated.Image
+                key={i}
+                source={card.image}
+                style={[styles.card, animatedStyles]}
+              />
+            );
           })}
         </View>
       </View>
