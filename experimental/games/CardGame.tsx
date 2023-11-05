@@ -1,13 +1,30 @@
-import { View, StyleSheet, Button, Image } from "react-native";
-import React, { useEffect } from "react";
+import {
+  View,
+  StyleSheet,
+  Button,
+  Image,
+  FlatList,
+  ImageProps,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
+  withRepeat,
+  withSequence,
+  withSpring,
   withTiming,
+  Easing,
 } from "react-native-reanimated";
-const cards = [
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+interface cardsProps {
+  image: string;
+  id: number;
+}
+
+const cards: cardsProps[] = [
   {
     image: require("../../assets/CardGame/K.png"),
     id: 1,
@@ -28,22 +45,94 @@ const CardGame = () => {
   const text1Opacity = useSharedValue(0);
   const text2Opacity = useSharedValue(0);
   const rotate = useSharedValue(0);
-
+  const offsetX = useSharedValue(0);
+  const offsetY = useSharedValue(0);
+  const offsetShake = useSharedValue(0);
+  const [gamestarted, setGameStarted] = useState(false);
   useEffect(() => {
     text1Opacity.value = withDelay(1 * delay, withTiming(1, { duration }));
     text2Opacity.value = withDelay(2 * delay, withTiming(1, { duration }));
   }, []);
 
-  const Start = () => {};
-  const animatedStyles = useAnimatedStyle(() => {
-    const rotateValue = interpolate(rotate.value, [0.1], [180, 360]);
+  const Start = () => {
+    shake();
+    setGameStarted(true);
+    offsetX.value = withSpring(0);
+    offsetY.value = withSpring(0);
+  };
+  const dragggableCards = useAnimatedStyle(() => {
     return {
-      transform: [
-        { rotateY: withTiming(`${rotateValue}deg`, { duration: 1000 }) },
-      ],
+      transform: [{ translateX: offsetX.value }, { translateY: offsetY.value }],
     };
   });
-  // const Start = () => {};
+
+  const pan = Gesture.Pan()
+    .onBegin(() => {})
+    .onChange((event) => {
+      offsetX.value = event.translationX;
+      offsetY.value = event.translationY;
+    })
+    .onFinalize(() => {});
+
+  const animatedStyles = useAnimatedStyle(() => {
+    const rotateValue = interpolate(rotate.value, [0, 1], [180, 360]);
+    return {
+      transform: [{ rotateX: withTiming(`${10}deg`, { duration: 1000 }) }],
+    };
+  });
+
+  const shake = () => {
+    const TIME = 100;
+    const EASING = Easing.elastic(1.5);
+    offsetShake.value = withRepeat(
+      withSequence(
+        withTiming(-2, {
+          duration: TIME,
+          easing: EASING,
+        }),
+        withTiming(-0, {
+          duration: TIME,
+          easing: EASING,
+        }),
+        withTiming(2, {
+          duration: TIME,
+          easing: EASING,
+        })
+      ),
+      20,
+      false
+    );
+  };
+
+  const shakingstyles = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotateZ: `${offsetShake.value}deg` }],
+    };
+  });
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: { image: any; id: number };
+    index: number;
+  }) => {
+    console.log(item);
+    return (
+      <GestureDetector gesture={pan}>
+        <Animated.Image
+          key={index}
+          source={item.image}
+          style={[
+            styles.card,
+            animatedStyles,
+            !gamestarted && dragggableCards,
+            shakingstyles,
+          ]}
+        />
+      </GestureDetector>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.innercontainer}>
@@ -59,18 +148,20 @@ const CardGame = () => {
             Hit start to begin
           </Animated.Text>
         </View>
-        <View style={styles.cardsSection}>
-          {cards.map((card, i) => {
-            console.log(card);
-            return (
-              <Animated.Image
-                key={i}
-                source={card.image}
-                style={[styles.card, animatedStyles]}
-              />
-            );
-          })}
-        </View>
+
+        <FlatList
+          data={cards}
+          renderItem={renderItem}
+          keyExtractor={(item) => `${item.id}`}
+          contentContainerStyle={{
+            flex: 1,
+            bottom: -100,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            zIndex: 10000,
+          }}
+        />
       </View>
       <View style={styles.button}>
         <Button title="Start Game" onPress={Start} />
@@ -97,7 +188,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
-    marginTop: -300,
+    marginTop: 100,
   },
   welcomeText: {
     fontSize: 24,
@@ -107,10 +198,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   cardsSection: {
-    bottom: -350,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-evenly",
+    marginHorizontal: 10,
+    //  flex: 1
   },
 
   card: {

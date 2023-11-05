@@ -26,8 +26,8 @@ export default function App() {
         {/* <TapGesture/> */}
         {/* <BouncingBall/> */}
         {/* <SwipeDelete/>  */}
-        {/* <Progress/> */}
-        <CardGame/>
+        {/* <Progress/>/ */}
+        {/* <CardGame/> */}
     </GestureHandlerRootView>
   );
 }
